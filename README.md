@@ -1,2 +1,7 @@
 # LFP-Proyecto2-202209714
-Proyecto 2 del curso de Lenguajes formales y de Programación sección B+
+
+Nombre: Angel Enrique ALvarado Ruix
+
+Carnet: 202209714
+
+Lenguajes Formales y de programación sección B+
