@@ -1,24 +1,50 @@
-# Importaciones
-
 from config.abstracto import Expression
 
-# Manejo de lexemas
 
 class Lexema(Expression):
     def __init__(self, lexema, fila, columna):
         self.lexema = lexema
         super().__init__(fila, columna)
 
-    def execute(self, enviroment):
-        return self.lexema
+    def metodo(self, parametro):
+        filatabla = '\t' * 2 + f'<td align="center">{parametro}</td>\n'
+        filatabla += '\t' * 2 + f'<td align="center">{self.lexema}</td>\n'
+        filatabla += '\t' * 2 + f'<td align="center">{self.fila}</td>\n'
+        filatabla += '\t' * 2 + f'<td align="center">{self.columna}</td>\n'
+        return filatabla
 
-    def getFila(self):
-        return super().getFila()
+    def getfila(self):
+        return super().getfila()
 
-    def getColumna(self):
-        return super().getColumna()
+    def getcolumna(self):
+        return super().getcolumna()
 
-# Variables y funciones globales
 
-lexemas = []
-lexemasUnicos = []
+def armar_lexema(cadena, analisis="ext") -> tuple:
+    lexema = ''
+    puntero = ''
+    if analisis == "ext":
+        for caracter in cadena:
+            puntero += caracter
+            if caracter == ' ':
+                return lexema, cadena[len(puntero) - 1:]
+            elif caracter == '(':
+                return lexema, cadena[len(puntero) - 1:]
+            else:
+                lexema += caracter
+    else:
+        for caracter in cadena:
+            puntero += caracter
+            if caracter == '\"':
+                aux = cadena[len(puntero):]
+                if aux[0] == '{':
+                    for i in aux:
+                        puntero += i
+                        lexema += i
+                        if i == ')':
+                            return lexema, aux[len(puntero) - 1:]
+                else:
+                    return lexema, cadena[len(puntero) - 1:]
+            else:
+                lexema += caracter
+    return None, None
