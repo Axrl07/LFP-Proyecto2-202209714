@@ -26,16 +26,16 @@ def armar_lexema(cadena, analisis="ext") -> tuple:
     if analisis == "ext":
         for caracter in cadena:
             puntero += caracter
-            if caracter == ' ':
+            if caracter == ' ' or caracter == '(':
                 return lexema, cadena[len(puntero) - 1:]
-            elif caracter == '(':
+            elif not caracter.isalpha():
                 return lexema, cadena[len(puntero) - 1:]
             else:
                 lexema += caracter
     else:
         for caracter in cadena:
             puntero += caracter
-            if caracter == '\"':
+            if caracter == '”':
                 aux = cadena[len(puntero):]
                 if aux[0] == '{':
                     for i in aux:

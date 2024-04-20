@@ -1,6 +1,5 @@
 from lexico.lexema import *
 from lexico.token import *
-from config.abstracto import armartabla, exportar
 
 
 class Lexer:
@@ -10,7 +9,7 @@ class Lexer:
         self.ncolumna = 0
         self.lexemas = []
         self.tokens = []
-        self.erroreslexicos = []
+        self.errores = []
 
     def analizador_lexico(self, cadena):
         lexema = ""
@@ -20,7 +19,7 @@ class Lexer:
             caracter = cadena[puntero]
             puntero += 1
 
-            if caracter == '\"':
+            if caracter == '“':
                 lexema, cadena = armar_lexema(cadena[puntero:], "inter")
                 if lexema and cadena:
                     l = Lexema(f'"{lexema}"', self.nlinea, self.ncolumna)
@@ -29,6 +28,10 @@ class Lexer:
                     self.tokens.append(t)
                     self.ncolumna += len(lexema) + 1
                     puntero = 0
+            elif caracter == '”':
+                self.ncolumna += 1
+                cadena = cadena[1:]
+                puntero = 0
             elif caracter.isupper() or caracter.islower():
                 lexema, cadena = armar_lexema(cadena[puntero - 1:])
                 if lexema and cadena:
@@ -41,7 +44,7 @@ class Lexer:
                     self.tokens.append(t)
                     self.ncolumna += len(lexema) + 1
                     puntero = 0
-            elif caracter == '=' or caracter == ';' or caracter == ')':
+            elif caracter == '=' or caracter == ';' or caracter == ')' or caracter == ',':
                 l = Lexema(caracter, self.nlinea, self.ncolumna)
                 t = Token("Simbolo", l.lexema, l.getfila(), l.getcolumna())
                 self.lexemas.append(l)
@@ -71,25 +74,8 @@ class Lexer:
                 cadena = cadena[1:]
                 puntero = 0
             else:
-                error = Lexema(caracter, self.nlinea, self.ncolumna)
-                self.erroreslexicos.append(error)
+                error = Token("lexico",caracter, self.nlinea, self.ncolumna)
+                self.errores.append(error)
                 self.ncolumna += 1
                 cadena = cadena[1:]
                 puntero = 0
-
-
-variable = '''
-CrearBD ejemplo = nueva CrearBD();
-EliminarBD elimina = nueva EliminarBD();
-EliminarColeccion eliminacolec = nueva EliminarColeccion(“NombreColeccion”);
-InsertarUnico insertadoc = nueva InsertarUnico(“NombreColeccion”,“
-{
-	"nombre":"Obra Literaria",
-	"autor":"Jorge Luis"
-}
-”);
-'''
-lexer = Lexer()
-lexer.analizador_lexico(variable)
-for i in lexer.tokens:
-    print(i.token, i.lexema)

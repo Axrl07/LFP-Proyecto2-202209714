@@ -43,10 +43,8 @@ def armartabla(listado, tipo="token") -> str:
 
     if tipo == "token":
         formato += '\t' * 2 + '<th><font color="white">Token</font</th>\n'
-    elif tipo == "parser":
-        formato += '\t' * 2 + '<th><font color="white">Token esperado</font</th>\n'
     else:
-        pass
+        formato += '\t' * 2 + '<th><font color="white">Tipo de error</font</th>\n'
 
     formato += '\t' * 2 + '<th><font color="white">Lexema</font</th>\n'
     formato += '\t' * 2 + '<th><font color="white">Fila</font</th>\n'
@@ -61,23 +59,27 @@ def armartabla(listado, tipo="token") -> str:
     return formato
 
 
-def exportar(listado, tipo="token") -> None:
+def exportar(listado, tipo) -> None:
     nombre = ""
+
+    if tipo == "token":
+        nombre = "ListaTokens" + ".html"
+    elif tipo == "parser":
+        nombre = "ListadoErroresSintacticos" + ".html"
+    else:
+        nombre = "ListaErroresLexicos" + ".html"
 
     with open(nombre, 'w') as archivo:
         archivo.write('<!DOCTYPE html>\n')
         archivo.write('<html>\n')
         archivo.write('<head>\n')
 
-        if tipo == "lexer":
-            nombre = "ListaErroresLexicos" + ".html"
-            archivo.write('<title> Listado de Errores Léxicos </title>\n')
+        if tipo == "token":
+            archivo.write('<title> Listado de Tokens </title>\n')
         elif tipo == "parser":
-            nombre = "ListadoErroresSintacticos" + ".html"
             archivo.write('<title> Listado de Errores Sintácticos </title>\n')
         else:
-            nombre = "ListaTokens" + ".html"
-            archivo.write('<title> Listado de Tokens </title>\n')
+            archivo.write('<title> Listado de Errores Léxicos </title>\n')
 
         archivo.write('</head>\n')
         archivo.write('<body font-size="16"><font size="6">\n')
