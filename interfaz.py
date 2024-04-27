@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import font
-
+from tkinter import messagebox
 
 class Ventana:
     def __init__(self, root=tk.Tk()):
@@ -58,43 +58,11 @@ class Ventana:
         self.area_entrada.delete("1.0", "end")
         self.area_entrada.insert("1.0", str(self.data[2]))
 
-    def ventana_mensaje(self, contenido, advertencia="error"):
-        ventana = tk.Tk()
-        if advertencia == "error":
-            ventana.title("Errores")
-        else:
-            ventana.title("Mensaje")
-
-        # Centrar la ventana de errores
-        ancho_ventana = ventana.winfo_reqwidth()
-        alto_ventana = ventana.winfo_reqheight()
-
-        pos_x = int(ventana.winfo_screenwidth() / 4 - ancho_ventana / 4)
-        pos_y = int(ventana.winfo_screenheight() / 4 - alto_ventana / 4)
-
-        ventana.geometry(f"600x200+{pos_x}+{pos_y}")
-
-        ventana.resizable(False, False)
-
-        fuente = font.Font(size=12)
-        negrita = font.Font(size=12, weight="bold")
-
-        enunciado = tk.Label(ventana, text=contenido, font=negrita)
-        enunciado.pack(expand=True, fill="both")
-
-        if advertencia == "error":
-            enunciado2 = tk.Label(ventana, text=f"Verifica el archivo de entrada {self.data[1]}", font=fuente)
-            enunciado2.pack(expand=True, fill="both")
-        else:
-            pass
-
-        ventana.mainloop()
-
     def traducir(self):
         entrada = len(str(self.area_entrada.get("1.0", "end")))
 
         if entrada <= 21:
-            return self.ventana_mensaje("No hay contenido para traducir")
+            return messagebox.showerror("Error", "No hay contenido para traducir")
         else:
             # configurando contenido
             aux, nombre, contenido_archivo = self.data

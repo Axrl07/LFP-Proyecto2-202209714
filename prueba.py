@@ -1,16 +1,13 @@
-from lexer import Lexer
+from analizador_lexico import Lexer
+from analizador_sintactico import Parser
 from config.abstracto import exportar
 
-var='''nueva CrearColeccion(“NombreColeccion”);
-EliminarColeccion %eliminacolec = #nueva EliminarColeccion(“NombreColeccion”);
-InsertarUnico insertadoc = @nueva# $InsertarUnico@(“NombreColeccion”
-'''
 variable = '''
 CrearBD ejemplo = nueva CrearBD();
 EliminarBD elimina = nueva EliminarBD();
-CrearColeccion #colec = nueva CrearColeccion(“NombreColeccion”);
-EliminarColeccion eliminacolec$ = nueva EliminarColeccion(“NombreColeccion”);
-InsertarUnico insertadoc = %nueva InsertarUnico(“NombreColeccion”,“
+CrearColeccion colec = nueva CrearColeccion(“NombreColeccion”);
+EliminarColeccion eliminacolec = nueva EliminarColeccion(“NombreColeccion”);
+InsertarUnico insertadoc = nueva InsertarUnico(“NombreColeccion”,“
 {
     "nombre":"Obra Literaria",
     "autor":"Jorge Luis"
@@ -33,10 +30,11 @@ BuscarTodo todo = nueva BuscarTodo (“NombreColeccion”);
 BuscarUnico todo = nueva BuscarUnico (“NombreColeccion”);
 '''
 
+# analisis lexico
 lexer = Lexer()
-lexer.analizador_lexico(var)
+lexer.analizar(variable)
+# analisis sintactico
+parser = Parser()
+parser.analizar(lexer.lexemas)
 
-if len(lexer.errores) == 0:
-    exportar(lexer.tokens,"token")
-else:
-    exportar(lexer.errores, "lexer")
+exportar(lexer.tokens,"token")

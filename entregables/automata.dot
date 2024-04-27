@@ -1,0 +1,24 @@
+digraph DFA {
+    rankdir=LR;
+    node [shape=circle];
+    s0; s1; s2; s3; s4; s5; s6; s7; s10; s11; s12;
+    s13 [shape=doublecircle]; // Estado de aceptación
+    
+    s0 -> s1 [label="P"];
+    s1 -> s2 [label="id"];
+    s2 -> s3 [label="="];
+    s3 -> s4 [label="nueva"];
+    s4 -> s5 [label="P"];
+
+    s5 -> s6 [label="("];
+
+    s6 -> s7 [label="v"];
+    s6 -> s12 [label=")"];
+
+    s7 -> s10 [label=","];
+    s7 -> s12 [label=")"];
+
+    s10 -> s11 [label="v"];
+    s11 -> s12 [label=")"];
+    s12 -> s13 [label=";"];
+}

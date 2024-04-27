@@ -11,7 +11,7 @@ class Lexer:
         self.tokens = []
         self.errores = []
 
-    def analizador_lexico(self, cadena):
+    def analizar(self, cadena):
         lexema = ""
         puntero = 0
 
@@ -22,7 +22,7 @@ class Lexer:
             if caracter == '“':
                 lexema, cadena = armar_lexema(cadena[puntero:], "inter")
                 if lexema and cadena:
-                    l = Lexema(f'"{lexema}"', self.nlinea, self.ncolumna)
+                    l = Lexema(f'{lexema}', self.nlinea, self.ncolumna)
                     t = Token( "Valor interno",l.lexema, l.getfila(), l.getcolumna())
                     self.lexemas.append(l)
                     self.tokens.append(t)
