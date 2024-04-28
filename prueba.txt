@@ -1,36 +1,32 @@
-Funcion Nombre = nueva Funcion("identificador");
-Funcion Nombre = nueva Funcion("","JSON");
-Funcion Nombre = nueva Funcion();
-
 CrearBD ejemplo = nueva CrearBD();
-
 EliminarBD elimina = nueva EliminarBD();
-
-CrearColeccion colec = nueva CrearColeccion(“NombreColeccion”);
-
-EliminarColeccion eliminacolec = nueva EliminarColeccion(“NombreColeccion”);
-
-InsertarUnico insertadoc = nueva InsertarUnico(“NombreColeccion”,“
+CrearColeccion colec =@ nueva $CrearColeccion(“NombreColeccion”);
+EliminarColeccion eliminacolec% = nueva EliminarColeccion!(“NombreColeccion”);
+InsertarUnico @insertadoc = nueva InsertarUnico(“NombreColeccion”$,“
 {
-	"nombre":"Obra Literaria",
-	"autor":"Jorge Luis"
+    "nombre":"Obra Literaria",
+    "autor":"Jorge Luis"
 }
+--- COmentario 1
 ”);
-
 ActualizarUnico actualizadoc = nueva ActualizarUnico(“NombreColeccion”, “
 {
-"nombre": "Obra Literaria"
+    "nombre": "Obra Literaria"
 },
 {
-$set: {"autor": "Mario Vargas"}
+    $set: {"autor": "Mario Vargas"}
 }
 ”);
-
 EliminarUnico eliminadoc = nueva EliminarUnico(“NombreColeccion”, “
 {
-"nombre": "Obra Literaria"
+    "nombre": "Obra Literaria"
 }
 ”);
-
+--- COmentario 2
 BuscarTodo todo = nueva BuscarTodo (“NombreColeccion”);
+/*
+    comentario de linea multiple
+    taka
+    comentario más mrda
+*/
 BuscarUnico todo = nueva BuscarUnico (“NombreColeccion”);

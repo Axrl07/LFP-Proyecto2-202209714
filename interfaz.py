@@ -1,80 +1,141 @@
+import os
 import tkinter as tk
 from tkinter import filedialog
-from tkinter import font
 from tkinter import messagebox
 
-class Ventana:
-    def __init__(self, root=tk.Tk()):
-        self.root = root
-        self.data = []
-        self.root.title("Proyecto 1 - Lenguajes Formales y de Programacion")
-        ancho_ventana, alto_ventana = self.root.winfo_reqwidth(), self.root.winfo_reqheight()
-        pos_x = int(self.root.winfo_screenwidth() / 4 - ancho_ventana / 4)
-        pos_y = int(self.root.winfo_screenheight() / 4 - alto_ventana / 4)
-        self.root.geometry(f"900x550+{pos_x}+{pos_y}")
-        self.root.resizable(False, False)
+# archivo
+ruta = ""
 
-        self.boton_abrir = tk.Button(self.root, text="Abrir archivo", command=self.abrir_explorador)
-        self.boton_abrir.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+def nuevo(area):
+    contenido = area.get("1.0", "end-1c")
+    if len(contenido.strip()) > 0:
+        respuesta = messagebox.askyesnocancel("Nuevo archivo", "¿Desea guardar los cambios en el archivo actual")
+        if respuesta is None:
+            return
+        elif respuesta:
+            guardarComo(area)
+    area.delete("1.0", "end")
 
-        self.boton_borrar_entrada = tk.Button(self.root, text="Borrar entrada",
-                                              command=lambda: self.area_entrada.delete("1.0", "end"))
-        self.boton_borrar_entrada.grid(row=0, column=1, padx=10, pady=10, sticky="w")
+def abrir(area):
+    global ruta
+    nuevaRuta = filedialog.askopenfilename(filetypes=[("Archivos de texto", ".txt"), ("Archivos LFP", ".lfp"), ("Todos los archivos", ".*")])
+    contenido = area.get("1.0", "end-1c")
 
-        self.boto_borrar_salida = tk.Button(self.root, text="Borrar salida", command=self.borrar)
-        self.boto_borrar_salida.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+    if len(contenido) > 10:
+        respuesta = messagebox.askyesnocancel("Nuevo archivo", "¿Desea guardar los cambios en el archivo actual")
+        if respuesta:
+            guardarComo(area)
 
-        self.entrada = tk.Label(self.root, text="Texto de entrada")
-        self.entrada.grid(row=2, column=0, padx=10, pady=10, sticky="w")
+    if nuevaRuta:
+        with open(nuevaRuta, "r", encoding="utf-8") as file:
+            contenido = file.read()
+            area.delete("1.0", "end")
+            area.insert("1.0", contenido)
+            ruta = nuevaRuta
 
-        self.salida = tk.Label(self.root, text="Traduccion")
-        self.salida.grid(row=2, column=1, padx=10, pady=10, sticky="w")
+def guardar(area):
+    global ruta
+    if ruta:
+        contenido = area.get("1.0", "end-1c")
+        with open(ruta, "w") as file:
+            file.write(contenido)
+    else:
+        guardarComo(area)
 
-        self.area_entrada = tk.Text(self.root, width=50, height=20)
-        self.area_entrada.grid(row=4, column=0, padx=10, pady=10)
 
-        self.area_salida = tk.Text(self.root, width=50, height=20, state="disabled")
-        self.area_salida.grid(row=4, column=1, padx=10, pady=10)
+def guardarComo(area):
+    global ruta
+    nuevaRuta = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Archivos de texto", "*.txt"), ("Archivos LFP", "*.lfp")])
+    if nuevaRuta:
+        contenido = area.get("1.0", "end-1c")
+        with open(nuevaRuta, "w") as file:
+            file.write(contenido)
+        ruta = nuevaRuta
 
-        self.boton_traducir = tk.Button(self.root, text="Traducir", command=self.traducir)
-        self.boton_traducir.grid(row=6, column=0, padx=10, pady=10, sticky="e")
+def salir(area, raiz):
+    contenido = area.get("1.0", "end-1c")
+    salir = messagebox.askyesno("Salir", "¿Está seguro que desea salir del programa?")
+    if salir:
+        if len(contenido.strip()) > 0:
+            respuesta = messagebox.askyesnocancel("Nuevo archivo", "¿Desea guardar los cambios en el archivo actual")
+            if respuesta:
+                guardarComo(area)
+                if salir:
+                    raiz.destroy()
+            elif respuesta is False:
+                raiz.destroy()
 
-    def borrar(self):
-        self.area_salida.config(state="normal")
-        self.area_salida.delete("1.0", "end")
-        self.area_salida.config(state="disabled")
 
-    def abrir_explorador(self):
-        filepath = filedialog.askopenfilename(
-            initialdir="/",
-            title="Selecciona un archivo",
-            filetypes=(
-                ("Archivos de texto", "*.json"),
-                ("Archivos de texto", "*.lfp"),
-                ("Todos los archivos", "*.*")
-            )
-        )
-        self.data = [filepath, filepath.split("/")[-1], open(filepath, "r").read()]
-        self.area_entrada.delete("1.0", "end")
-        self.area_entrada.insert("1.0", str(self.data[2]))
+# analisis
 
-    def traducir(self):
-        entrada = len(str(self.area_entrada.get("1.0", "end")))
+def generarSentencias(area):
+    print("Generar sentencias MongoDB")
+    pass
 
-        if entrada <= 21:
-            return messagebox.showerror("Error", "No hay contenido para traducir")
-        else:
-            # configurando contenido
-            aux, nombre, contenido_archivo = self.data
-            contenido_area = str(self.area_entrada.get("1.0", "end"))
-            if contenido_archivo != contenido_area:
-                contenido = contenido_area
-            else:
-                contenido = contenido_archivo
-            print(contenido)
-            # ejecutamos main.py
 
+# listados
+
+def tokens(area):
+    print("Ver Tokens")
+    global ruta
+    print(ruta)
+    directorio = ruta.split("/").pop(-1)
+    print(directorio)
+
+def errores(area):
+    print( "Ver Errores")
+
+
+# editor
+
+def editor():
+    root = tk.Tk()
+    root.title('Editor de peudo-codigo a mongoDB en python')
+    root.config(bg="#1C2833")
+
+    ancho = root.winfo_reqwidth()
+    alto = root.winfo_reqheight()
+    pos_x = int(root.winfo_screenwidth() / 4 - ancho / 4)
+    pos_y = int(root.winfo_screenheight() / 4 - alto / 4)
+    root.geometry(f"900x550+{pos_x}+{pos_y}")
+    root.resizable(False, False)
+
+    # barra de menus
+    barraMenus = tk.Menu(root)
+    root.config(menu=barraMenus)
+
+    # menus
+    archivo = tk.Menu(barraMenus)
+    analisis = tk.Menu(barraMenus)
+    listados = tk.Menu(barraMenus)
+    
+    barraMenus.add_cascade(label='Archivo', menu=archivo)
+    barraMenus.add_cascade(label='Analisis', menu=analisis)
+    barraMenus.add_cascade(label='Listados', menu=listados)
+
+    # opciones de archivo
+    archivo.add_command(label='Nuevo', command=lambda:nuevo(area))
+    archivo.add_command(label='Abrir', command=lambda:abrir(area))
+    archivo.add_command(label='Guardar', command=lambda:guardar(area))
+    archivo.add_command(label='Guardar Como', command=lambda:guardarComo(area))
+    archivo.add_separator()
+    archivo.add_command(label='Salir', command=lambda:salir(area, root))
+
+    # opciones de analisis
+    analisis.add_command(label='generar sentencias', command=lambda:generarSentencias(area))
+
+    # opciones de listados
+    listados.add_command(label='Tokens', command=lambda:tokens(area))
+    listados.add_separator()
+    listados.add_command(label='Errores', command=lambda:errores(area))
+
+    # Area de texto
+    texto = tk.Label(root, text="Ingrese el pseudo-codigo o abra un archivo:", bg="#1C2833", fg="white", font=("Bahnschrift", 20))
+    texto.pack(anchor="w", padx=10, pady=5)
+    area = tk.Text(root, font=("JetBrains Mono", 15))
+    area.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+    root.mainloop()
 
 if __name__ == "__main__":
-    app = Ventana()
-    app.root.mainloop()
+    editor()
