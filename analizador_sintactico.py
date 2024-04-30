@@ -7,78 +7,182 @@ class Parser:
         self.listadoTokens = tokens
         self.errores = errores
         self.traducciones = []
-
-    def analizar(self):
-        listadoFunciones = self.funciones()
-        self.traducciones = self.traducir(listadoFunciones)
-        respuesta = self.getErrores()
-        if respuesta:
-            x = (respuesta,"errores sintacticos encontrados, no es posible traducir")
-            print(x[1])
-        else:
-            x = (respuesta,"errores lexicos encontrados, pero no intervienen en la traduccion")
-            print(x[1])
+        self.reservadas = ['CrearBD', 'EliminarBD', 'CrearColeccion', 'EliminarColeccion', 'BuscarTodo', 'BuscarUnico', 'InsertarUnico', 'ActualizarUnico', 'EliminarUnico', 'Comentario de Linea', 'Comentario de Bloque']
 
     def funciones(self):
         funciones = []
         while self.listadoTokens:
             reservada = self.listadoTokens.pop(0)
-            if reservada.lexema == 'CrearBD' or reservada.lexema == 'EliminarBD':
-                nombre = self.listadoTokens.pop(0)
-                igual = self.listadoTokens.pop(0)
-                nueva = self.listadoTokens.pop(0)
-                reservada2 = self.listadoTokens.pop(0)
-                abre = self.listadoTokens.pop(0)
-                cierra = self.listadoTokens.pop(0)
-                fin = self.listadoTokens.pop(0)
-                funciones.append(Funcion(reservada, nombre, igual, nueva, reservada2, abre, None, None, None, cierra, fin))
-            elif reservada.lexema == 'CrearColeccion' or reservada.lexema == 'EliminarColeccion' or reservada.lexema == 'BuscarTodo' or reservada.lexema == 'BuscarUnico':
-                identificador = self.listadoTokens.pop(0)
-                igual = self.listadoTokens.pop(0)
-                nueva = self.listadoTokens.pop(0)
-                reservada2 = self.listadoTokens.pop(0)
-                abre = self.listadoTokens.pop(0)
-                nombre = self.listadoTokens.pop(0)
-                cierre = self.listadoTokens.pop(0)
-                fin = self.listadoTokens.pop(0)
-                funciones.append(Funcion(reservada, identificador, igual, nueva, reservada2, abre, nombre, None, None, cierre, fin))
-            elif reservada.lexema == 'InsertarUnico' or reservada.lexema == 'ActualizarUnico' or reservada.lexema == 'EliminarUnico':
-                identificador = self.listadoTokens.pop(0)
-                igual = self.listadoTokens.pop(0)
-                nueva = self.listadoTokens.pop(0)
-                reservada2 = self.listadoTokens.pop(0)
-                abre = self.listadoTokens.pop(0)
-                nombre = self.listadoTokens.pop(0)
-                separador = self.listadoTokens.pop(0)
-                json = self.listadoTokens.pop(0)
-                cierre = self.listadoTokens.pop(0)
-                fin = self.listadoTokens.pop(0)
-                funciones.append(Funcion(reservada, identificador, igual, nueva, reservada2, abre, nombre, separador, json, cierre, fin))
-            elif reservada.token == 'Comentario de Linea' or reservada.token == 'Comentario de Bloque':
-                funciones.append(Funcion(reservada.token, None, None, None, None, None, None, None, None, None, None, reservada.lexema))
+            if reservada.lexema in self.reservadas:
+                if reservada.lexema == 'CrearBD' or reservada.lexema == 'EliminarBD':
+                    identificador = self.listadoTokens.pop(0)
+                    if identificador.lexema.isalpha() and identificador.lexema not in self.reservadas:
+                        igual = self.listadoTokens.pop(0)
+                        if igual.lexema == '=':
+                            nueva = self.listadoTokens.pop(0)
+                            if nueva.lexema == 'nueva':
+                                reservada2 = self.listadoTokens.pop(0)
+                                if reservada2.lexema == reservada.lexema:
+                                    abre = self.listadoTokens.pop(0)
+                                    if abre.lexema == '(':
+                                        cierra = self.listadoTokens.pop(0)
+                                        if cierra.lexema == ')':
+                                            finSentencia = self.listadoTokens.pop(0)
+                                            if finSentencia.lexema == ';':
+                                                funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, nueva.lexema, reservada2.lexema, abre.lexema, None, None, None, cierra.lexema, finSentencia.lexema))
+                                            else:
+                                                e = Error("Sintactico", ";", finSentencia.lexema, finSentencia.getfila(), finSentencia.getcolumna())
+                                                self.errores.append(e)
+                                        else:
+                                            e = Error("Sintactico", ")", cierra.lexema, cierra.getfila(), cierra.getcolumna())
+                                            self.errores.append(e)
+                                    else:
+                                        e = Error("Sintactico", "(", abre.lexema, abre.getfila(), abre.getcolumna())
+                                        self.errores.append(e)
+                                else:
+                                    e = Error("Sintactico", reservada.lexema, reservada2.lexema, reservada2.getfila(), reservada2.getcolumna())
+                                    self.errores.append(e)
+                            else:
+                                e = Error("Sintactico", "nueva", nueva.lexema, nueva.getfila(), nueva.getcolumna())
+                                self.errores.append(e)
+                        else:
+                            e = Error("Sintactico", "=", igual.lexema, igual.getfila(), igual.getcolumna())
+                            self.errores.append(e)
+                    else:
+                        e = Error("Sintactico", "identificador", None, identificador.getfila(), identificador.getcolumna())
+                        self.errores.append(e)
+                elif reservada.lexema == 'CrearColeccion' or reservada.lexema == 'EliminarColeccion' or reservada.lexema == 'BuscarTodo' or reservada.lexema == 'BuscarUnico':
+                    identificador = self.listadoTokens.pop(0)
+                    if identificador.lexema.isalpha() and identificador.lexema not in self.reservadas:
+                        igual = self.listadoTokens.pop(0)
+                        if igual.lexema == '=':
+                            nueva = self.listadoTokens.pop(0)
+                            if nueva.lexema == 'nueva':
+                                reservada2 = self.listadoTokens.pop(0)
+                                if reservada2.lexema == reservada.lexema:
+                                    abre = self.listadoTokens.pop(0)
+                                    if abre.lexema == '(':
+                                        nombre = self.listadoTokens.pop(0)
+                                        if nombre.lexema.isalpha() and nombre.lexema not in self.reservadas:
+                                            cierre = self.listadoTokens.pop(0)
+                                            if cierre.lexema == ')':
+                                                finSentencia = self.listadoTokens.pop(0)
+                                                if finSentencia.lexema == ';':
+                                                    funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, nueva.lexema, reservada2.lexema, abre.lexema, nombre.lexema, None, None, cierre.lexema, finSentencia.lexema))
+                                                else:
+                                                    e = Error("Sintactico", ";", finSentencia.lexema, finSentencia.getfila(), finSentencia.getcolumna())
+                                                    self.errores.append(e)
+                                            else:
+                                                e = Error("Sintactico", ")", cierre.lexema, cierre.getfila(), cierre.getcolumna())
+                                                self.errores.append(e)
+                                        else:
+                                            e = Error("Sintactico", "Nombre de la Coleccion", nombre.lexema, nombre.getfila(), nombre.getcolumna())
+                                            self.errores.append(e)
+                                    else:
+                                        e = Error("Sintactico", "(", abre.lexema, abre.getfila(), abre.getcolumna())
+                                        self.errores.append(e)
+                                else:
+                                    e = Error("Sintactico", reservada.lexema, reservada2.lexema, reservada2.getfila(), reservada2.getcolumna())
+                                    self.errores.append(e)
+                            else:
+                                e = Error("Sintactico", "nueva", nueva.lexema, nueva.getfila(), nueva.getcolumna())
+                                self.errores.append(e)
+                        else:
+                            e = Error("Sintactico", "=", igual.lexema, igual.getfila(), igual.getcolumna())
+                            self.errores.append(e)
+                    else:
+                        if not identificador.lexema.isalpha():
+                            e = Error("Sintactico", "identificador", None, identificador.getfila(), identificador.getcolumna())
+                        else:
+                            e = Error("Sintactico", "Diferente de una palabra reservada", identificador.lexema, identificador.getfila(), identificador.getcolumna())
+                        self.errores.append(e)
+                elif reservada.lexema == 'InsertarUnico' or reservada.lexema == 'ActualizarUnico' or reservada.lexema == 'EliminarUnico':
+                    identificador = self.listadoTokens.pop(0)
+                    if identificador.lexema.isalpha() and identificador.lexema not in self.reservadas:
+                        igual = self.listadoTokens.pop(0)
+                        if igual.lexema == '=':
+                            nueva = self.listadoTokens.pop(0)
+                            if nueva.lexema == 'nueva':
+                                reservada2 = self.listadoTokens.pop(0)
+                                if reservada2.lexema == reservada.lexema:
+                                    abre = self.listadoTokens.pop(0)
+                                    if abre.lexema == '(':
+                                        nombre = self.listadoTokens.pop(0)
+                                        if nombre.lexema.isalpha() and nombre.lexema not in self.reservadas:
+                                            separador = self.listadoTokens.pop(0)
+                                            if separador.lexema == ',':
+                                                json = self.listadoTokens.pop(0)
+                                                if json.lexema.strip():
+                                                    cierre = self.listadoTokens.pop(0)
+                                                    if cierre.lexema == ')':
+                                                        finSentencia = self.listadoTokens.pop(0)
+                                                        if finSentencia.lexema == ';':
+                                                            funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, nueva.lexema, reservada2.lexema, abre.lexema, nombre.lexema, separador.lexema, json.lexema, cierre.lexema, finSentencia.lexema))
+                                                        else:
+                                                            e = Error("Sintactico", ";", finSentencia.lexema, finSentencia.getfila(), finSentencia.getcolumna())
+                                                            self.errores.append(e)
+                                                    else:
+                                                        e = Error("Sintactico", ")", cierre.lexema, cierre.getfila(), cierre.getcolumna())
+                                                        self.errores.append(e)
+                                                else:
+                                                    e = Error("Sintactico", "JSON", json.lexema, json.getfila(), json.getcolumna())
+                                                    self.errores.append(e)
+                                            else:
+                                                e = Error("Sintactico", ",", separador.lexema, separador.getfila(), separador.getcolumna())
+                                                self.errores.append(e)
+                                        else:
+                                            e = Error("Sintactico", "Nombre de la Coleccion", nombre.lexema, nombre.getfila(), nombre.getcolumna())
+                                            self.errores.append(e)
+                                    else:
+                                        e = Error("Sintactico", "(", abre.lexema, abre.getfila(), abre.getcolumna())
+                                        self.errores.append(e)
+                                else:
+                                    e = Error("Sintactico", reservada.lexema, reservada2.lexema, reservada2.getfila(), reservada2.getcolumna())
+                                    self.errores.append(e)
+                            else:
+                                e = Error("Sintactico", "nueva", nueva.lexema, nueva.getfila(), nueva.getcolumna())
+                                self.errores.append(e)
+                        else:
+                            e = Error("Sintactico", "=", igual.lexema, igual.getfila(), igual.getcolumna())
+                            self.errores.append(e)
+                    else:
+                        if not identificador.lexema.isalpha():
+                            e = Error("Sintactico", "identificador", None, identificador.getfila(), identificador.getcolumna())
+                        else:
+                            e = Error("Sintactico", "Diferente de una palabra reservada", identificador.lexema, identificador.getfila(), identificador.getcolumna())
+                        self.errores.append(e)
             else:
-                print("valiendo vrga",reservada.token, reservada.lexema, reservada.getFila(), reservada.getColumna())
+                if reservada.token in self.reservadas:
+                    funciones.append(Funcion(reservada.token, None, None, None, None, None, None, None, None, None, None, reservada.lexema))
+                else:
+                    e = Error("Sintactico", "No es una palabra reservada", reservada.lexema, reservada.getfila(), reservada.getcolumna())
+                    self.errores.append(e)
         return funciones
     
-    def traducir(self, listado):
-        for i in listado:
-            tipo = type(i.traducir()) is tuple
-            if not tipo:
-                self.traducciones.append(i.traducir())
-            else:
-                if type(i.traducir()[1]) == Funcion:
-                    e = Error("Sintactico", i.traducir()[1].lexema, i.traducir()[0].lexema, i.traducir()[0].getfila(), i.traducir()[0].getcolumna())
-                elif type(i.traducir()[0]) == Funcion and i.traducir()[1] != None:
-                    e = Error("Sintactico", i.traducir()[1], i.traducir()[0].lexema, i.traducir()[0].getfila(), i.traducir()[0].getcolumna())
-                else:
-                    e = Error("Sintactico", i.traducir()[1], i.traducir()[0].lexema, i.traducir()[0].getfila(), i.traducir()[0].getcolumna())
-                self.errores.append(e)
-
     def getErrores(self):
         exportar(self.errores, "errores")
-
         for i in self.errores:
             if i.tipo == "Sintactico":
+                # si hubo errores
                 return True
-            else:
-                return False
+        # no hubo errores
+        return False
+    
+    def traducir(self, listado):
+        if self.getErrores():
+            return (False,"errores sintacticos encontrados, no es posible traducir, verifique el archivo errores.md")
+        else:
+            for i in listado:
+                traduccion = i.traducir()
+                self.traducciones.append(traduccion)
+            return (True,"traduccion realizada con exito, verifique el archivo traducciones.md")
+
+    def analizar(self):
+        listadoFunciones = self.funciones()
+        respuesta, msj = self.traducir(listadoFunciones)
+        if respuesta:
+            # traduccion exitosa
+            return (respuesta, msj)
+        else:
+            # traduccion fallida
+            return (respuesta, msj)

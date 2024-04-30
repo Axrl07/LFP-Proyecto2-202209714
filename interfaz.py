@@ -1,7 +1,8 @@
-import os
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
+from analizador_lexico import Lexer
+from analizador_sintactico import Parser
 
 # archivo
 ruta = ""
@@ -70,20 +71,25 @@ def salir(area, raiz):
 
 def generarSentencias(area):
     print("Generar sentencias MongoDB")
-    pass
+    # analisis lexico
+    lexer = Lexer()
+    lexer.analizar(area.get("1.0", "end-1c"))
 
+    # analisis sintactico
+    parser = Parser(lexer.tokens, lexer.errores)
+    # traduccion exitosa y mensaje
+    respuesta, msj = parser.analizar()
 
-# listados
-
-def tokens(area):
-    print("Ver Tokens")
-    global ruta
-    print(ruta)
-    directorio = ruta.split("/").pop(-1)
-    print(directorio)
-
-def errores(area):
-    print( "Ver Errores")
+    area.delete("1.0", "end")
+    if respuesta:
+        nuevaArea = ""
+        for i in parser.traducciones:
+            nuevaArea += i+"\n"
+        area.insert("1.0", msj+"\n"*2+nuevaArea)
+        messagebox.showinfo("Analisis", "analisis exitoso, traduccion generada en el area de texto")
+    else:
+        area.insert("1.0", msj)
+        messagebox.showinfo("Analisis", "analisis fallido, revise el archivo de errores.md")
 
 
 # editor
@@ -98,7 +104,7 @@ def editor():
     pos_x = int(root.winfo_screenwidth() / 4 - ancho / 4)
     pos_y = int(root.winfo_screenheight() / 4 - alto / 4)
     root.geometry(f"900x550+{pos_x}+{pos_y}")
-    root.resizable(False, False)
+    root.resizable(True, True)
 
     # barra de menus
     barraMenus = tk.Menu(root)
@@ -107,11 +113,9 @@ def editor():
     # menus
     archivo = tk.Menu(barraMenus)
     analisis = tk.Menu(barraMenus)
-    listados = tk.Menu(barraMenus)
     
     barraMenus.add_cascade(label='Archivo', menu=archivo)
     barraMenus.add_cascade(label='Analisis', menu=analisis)
-    barraMenus.add_cascade(label='Listados', menu=listados)
 
     # opciones de archivo
     archivo.add_command(label='Nuevo', command=lambda:nuevo(area))
@@ -123,11 +127,6 @@ def editor():
 
     # opciones de analisis
     analisis.add_command(label='generar sentencias', command=lambda:generarSentencias(area))
-
-    # opciones de listados
-    listados.add_command(label='Tokens', command=lambda:tokens(area))
-    listados.add_separator()
-    listados.add_command(label='Errores', command=lambda:errores(area))
 
     # Area de texto
     texto = tk.Label(root, text="Ingrese el pseudo-codigo o abra un archivo:", bg="#1C2833", fg="white", font=("Bahnschrift", 20))
