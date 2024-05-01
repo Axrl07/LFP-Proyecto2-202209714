@@ -1,7 +1,7 @@
 variable = '''CrearBD Lucia fuap nueva CrearBD();
 EliminarBD elimina = nueca EliminarBD();
 CrearColeccion colec =@ epaa $CrearColeccion(“Enrique”);
-EliminarColeccion eliminacolec% = nueva EliminarColeccion!(“Enrique”);
+EliminarColeccion eliminacolec% = nueva CrearColeccion!(“Enrique”);
 InsertarUnico @insertadoc = nueva EliminarColeccion(“Enrique”$,“
 {
     "nombre":"Obra Literaria",
@@ -15,7 +15,8 @@ ActualizarUnico actualizadoc = nueva ActualizarUnico(“Enrique”, “
 {
     $set: {"autor": "Mon laferte"}
 }
-”(;
+”);
+
 EliminarUnico eliminadoc = nueva EliminarUnico)“Enrique”, “
 {
     "nombre": "Obra Literaria"
@@ -28,7 +29,7 @@ BuscarTodo todo = nueva BuscarTodo (“Enrique”);
     taka taka taka
 	fuap fuap fuap
 */
-BuscarUnico todo = nueva BuscarUnico (“Enrique”);
+BuscarUnico todo = nueva BuscarUnico (“Enrique”(;
 --- Ya salio esta prra mmda
 
 '''
