@@ -49,7 +49,7 @@ class Parser:
                             e = Error("Sintactico", "=", igual.lexema, igual.getfila(), igual.getcolumna())
                             self.errores.append(e)
                     else:
-                        e = Error("Sintactico", "identificador", None, identificador.getfila(), identificador.getcolumna())
+                        e = Error("Sintactico", "identificador", identificador.lexema, identificador.getfila(), identificador.getcolumna())
                         self.errores.append(e)
                 elif reservada.lexema == 'CrearColeccion' or reservada.lexema == 'EliminarColeccion' or reservada.lexema == 'BuscarTodo' or reservada.lexema == 'BuscarUnico':
                     identificador = self.listadoTokens.pop(0)
@@ -92,11 +92,11 @@ class Parser:
                             self.errores.append(e)
                     else:
                         if not identificador.lexema.isalpha():
-                            e = Error("Sintactico", "identificador", None, identificador.getfila(), identificador.getcolumna())
+                            e = Error("Sintactico", "identificador", identificador.lexema, identificador.getfila(), identificador.getcolumna())
                         else:
                             e = Error("Sintactico", "Diferente de una palabra reservada", identificador.lexema, identificador.getfila(), identificador.getcolumna())
                         self.errores.append(e)
-                elif reservada.lexema == 'InsertarUnico' or reservada.lexema == 'ActualizarUnico' or reservada.lexema == 'EliminarUnico':
+                else:
                     identificador = self.listadoTokens.pop(0)
                     if identificador.lexema.isalpha() and identificador.lexema not in self.reservadas:
                         igual = self.listadoTokens.pop(0)
@@ -147,7 +147,7 @@ class Parser:
                             self.errores.append(e)
                     else:
                         if not identificador.lexema.isalpha():
-                            e = Error("Sintactico", "identificador", None, identificador.getfila(), identificador.getcolumna())
+                            e = Error("Sintactico", "identificador", identificador.lexema, identificador.getfila(), identificador.getcolumna())
                         else:
                             e = Error("Sintactico", "Diferente de una palabra reservada", identificador.lexema, identificador.getfila(), identificador.getcolumna())
                         self.errores.append(e)
@@ -155,8 +155,12 @@ class Parser:
                 if reservada.token in self.reservadas:
                     funciones.append(Funcion(reservada.token, None, None, None, None, None, None, None, None, None, None, reservada.lexema))
                 else:
-                    e = Error("Sintactico", "No es una palabra reservada", reservada.lexema, reservada.getfila(), reservada.getcolumna())
-                    self.errores.append(e)
+                    saltos = 0
+                    for i in self.listadoTokens:
+                        saltos += 1
+                        if i.lexema in self.reservadas:
+                            break
+                    self.listadoTokens = self.listadoTokens[saltos-1:]
         return funciones
     
     def getErrores(self):

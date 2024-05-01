@@ -7,8 +7,8 @@ from modulo.abstracto import exportar
 class Lexer:
 
     def __init__(self):
-        self.nlinea = 1
-        self.ncolumna = 1
+        self.nlinea = 0
+        self.ncolumna = 0
         self.lexemas = []
         self.tokens = []
         self.errores = []
@@ -36,7 +36,7 @@ class Lexer:
                         t = Token("Json", l.lexema, l.getfila(), l.getcolumna())
                     self.lexemas.append(l)
                     self.tokens.append(t)
-                    self.ncolumna += len(lexema) + 1
+                    self.ncolumna += len(lexema)
 
                     if lineas > 0:
                         self.nlinea += lineas
@@ -59,7 +59,7 @@ class Lexer:
                             t = Token("Identificador", l.lexema, l.getfila(), l.getcolumna())
                     self.lexemas.append(l)
                     self.tokens.append(t)
-                    self.ncolumna += len(lexema) + 1
+                    self.ncolumna += len(lexema)
                     puntero = 0
             elif caracter == '=' or caracter == ',' or caracter == ')' or caracter == ';':
                 l = Lexema(caracter, self.nlinea, self.ncolumna)
@@ -110,7 +110,7 @@ class Lexer:
                 puntero = 0
             elif caracter == "\n":
                 self.nlinea += 1
-                self.ncolumna = 1
+                self.ncolumna = 0
                 cadena = cadena[1:]
                 puntero = 0
             elif caracter == ' ' or caracter == '\r':

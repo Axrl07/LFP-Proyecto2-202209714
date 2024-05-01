@@ -1,22 +1,22 @@
-variable = '''CrearBD Lucia = nueva CrearBD();
-EliminarBD elimina = nueva EliminarBD();
-CrearColeccion colec =@ nueva $CrearColeccion(“Enrique”);
+variable = '''CrearBD Lucia fuap nueva CrearBD();
+EliminarBD elimina = nueca EliminarBD();
+CrearColeccion colec =@ epaa $CrearColeccion(“Enrique”);
 EliminarColeccion eliminacolec% = nueva EliminarColeccion!(“Enrique”);
-InsertarUnico @insertadoc = nueva InsertarUnico(“Enrique”$,“
+InsertarUnico @insertadoc = nueva EliminarColeccion(“Enrique”$,“
 {
     "nombre":"Obra Literaria",
     "autor":"JUAN LUIS GUERRA"
-}”(;
+}”);
 --- COmentario 1 JUASJUAS
-ActualizarUnico actualizadoc = nueva Epaaaa(“Enrique”, “
+ActualizarUnico actualizadoc = nueva ActualizarUnico(“Enrique”, “
 {
     "nombre": "Obra Literaria"
 },
 {
     $set: {"autor": "Mon laferte"}
 }
-”;
-EliminarUnico eliminadoc = nueva EliminarUnico(“Enrique”; “
+”(;
+EliminarUnico eliminadoc = nueva EliminarUnico)“Enrique”, “
 {
     "nombre": "Obra Literaria"
 }
@@ -30,6 +30,7 @@ BuscarTodo todo = nueva BuscarTodo (“Enrique”);
 */
 BuscarUnico todo = nueva BuscarUnico (“Enrique”);
 --- Ya salio esta prra mmda
+
 '''
 
 
