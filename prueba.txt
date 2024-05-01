@@ -1,33 +1,31 @@
-CrearBD Lucia = nueva CrearBD();
+CrearBD ejemplo = nueva CrearBD();
 EliminarBD elimina = nueva EliminarBD();
-CrearColeccion colec =@ nueva $CrearColeccion(“Enrique”);
-EliminarColeccion eliminacolec% = nueva EliminarColeccion!(“Enrique”);
-InsertarUnico @insertadoc = nueva InsertarUnico(“Enrique”$,“
+---  comentario 1
+CrearColeccion colec = nueva CrearColeccion(“NombreColeccion”);
+/*
+	comentario de más
+	de una linea
+	ejemplo
+*/
+EliminarColeccion eliminacolec = nueva EliminarColeccion(“NombreColeccion”);
+InsertarUnico insertadoc = nueva InsertarUnico(“NombreColeccion”,“
 {
-    "nombre":"Obra Literaria",
-    "autor":"JUAN LUIS GUERRA"
-}”);
---- COmentario 1 JUASJUAS
-ActualizarUnico actualizadoc = nueva ActualizarUnico(“Enrique”, “
+	"nombre":"Obra Literaria",
+	"autor":"Jorge Luis"
+}
+”);
+ActualizarUnico actualizadoc = nueva ActualizarUnico(“NombreColeccion”, “
 {
-    "nombre": "Obra Literaria"
+	"nombre": "Obra Literaria"
 },
 {
-    $set: {"autor": "Mon laferte"}
+	$set: {"autor": "Mario Vargas"}
 }
 ”);
-EliminarUnico eliminadoc = nueva EliminarUnico(“Enrique”, “
+EliminarUnico eliminadoc = nueva EliminarUnico(“NombreColeccion”, “
 {
-    "nombre": "Obra Literaria"
+	"nombre": "Obra Literaria"
 }
 ”);
---- COmentario 2 lucia xd
-BuscarTodo todo = nueva BuscarTodo (“Enrique”);
-/*
-    comentario de linea multiple
-    taka taka taka
-	fuap fuap fuap
-*/
-BuscarUnico todo = nueva BuscarUnico (“Enrique”);
---- Ya salio esta prra mmda
-
+BuscarTodo todo = nueva BuscarTodo (“NombreColeccion”);
+BuscarUnico todo = nueva BuscarUnico (“NombreColeccion”);

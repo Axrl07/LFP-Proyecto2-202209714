@@ -38,7 +38,7 @@ def guardar(area):
     global ruta
     if ruta:
         contenido = area.get("1.0", "end-1c")
-        with open(ruta, "w") as file:
+        with open(ruta, "w", encoding="utf-8") as file:
             file.write(contenido)
     else:
         guardarComo(area)
@@ -49,7 +49,7 @@ def guardarComo(area):
     nuevaRuta = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Archivos de texto", "*.txt"), ("Archivos LFP", "*.lfp")])
     if nuevaRuta:
         contenido = area.get("1.0", "end-1c")
-        with open(nuevaRuta, "w") as file:
+        with open(nuevaRuta, "w", encoding="utf-8") as file:
             file.write(contenido)
         ruta = nuevaRuta
 
