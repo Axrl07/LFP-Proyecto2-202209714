@@ -155,20 +155,18 @@ class Parser:
                 if reservada.token in self.reservadas:
                     funciones.append(Funcion(reservada.token, None, None, None, None, None, None, None, None, None, None, reservada.lexema))
                 else:
-                    pass
-            
-            saltos = 0
-            try:
-                for i in self.listadoTokens:
-                    saltos += 1
-                    if i.lexema == ';' and self.listadoTokens[saltos].lexema in self.reservadas:
-                        self.listadoTokens = self.listadoTokens[saltos:]
+                    saltos = 0
+                    try:
+                        for i in self.listadoTokens:
+                            saltos += 1
+                            if i.lexema == ';' and self.listadoTokens[saltos].lexema in self.reservadas:
+                                self.listadoTokens = self.listadoTokens[saltos:]
+                                break
+                            else:
+                                pass
+                    except IndexError:
+                        print("Fin del archivo: hubo un error sintactico en la última linea del archivo.")
                         break
-                    else:
-                        pass
-            except IndexError:
-                print("Fin del archivo: hubo un error sintactico en la última linea del archivo.")
-                break
         return funciones
     
     def getErrores(self):

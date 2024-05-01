@@ -1,0 +1,15 @@
+errores sintacticos encontrados, no es posible traducir, verifique el archivo errores.md
+| 1 | Lexico | @ |  | 2 | 22 |
+| 2 | Lexico | $ |  | 2 | 29 |
+| 3 | Lexico | % |  | 3 | 30 |
+| 4 | Lexico | ! |  | 3 | 54 |
+| 5 | Lexico | @ |  | 4 | 14 |
+| 6 | Lexico | $ |  | 4 | 60 |
+| 7 | Sintactico | fuap | = | 0 | 14 |
+| 8 | Sintactico | nueca | nueva | 1 | 21 |
+| 9 | Sintactico | ( | identificador | 1 | 37 |
+| 10 | Sintactico | epaa | nueva | 2 | 24 |
+| 11 | Sintactico | ( | identificador | 2 | 44 |
+| 12 | Sintactico | CrearColeccion | EliminarColeccion | 3 | 40 |
+| 13 | Sintactico | EliminarColeccion | InsertarUnico | 4 | 34 |
+| 14 | Sintactico | ) | ( | 19 | 46 |

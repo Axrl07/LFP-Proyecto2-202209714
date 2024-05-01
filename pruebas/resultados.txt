@@ -1,0 +1,15 @@
+traduccion realizada con exito, verifique el archivo traducciones.md
+
+db = use("Lucia");
+db.dropDataBase();
+db.createCollection("Enrique");
+db.Enrique.drop();
+db.Enrique.insertOne({    "nombre":"Obra Literaria",    "autor":"JUAN LUIS GUERRA"});
+# COmentario 1 JUASJUAS
+db.Enrique.updateOne({    "nombre": "Obra Literaria"},{    $set: {"autor": "Mon laferte"}});
+db.Enrique.deleteOne({    "nombre": "Obra Literaria"});
+# COmentario 2 lucia xd
+db.Enrique.find();
+'''    comentario de linea multiple    taka taka taka	fuap fuap fuap'''
+db.Enrique.findOne()
+# Ya salio esta prra mmda
