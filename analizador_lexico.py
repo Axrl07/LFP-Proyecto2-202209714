@@ -53,8 +53,8 @@ class Lexer:
                     if caracter.isupper():
                         t = Token("Reservada", l.lexema, l.getfila(), l.getcolumna())
                     else:
-                        if lexema == "nueva":
-                            t = Token("Nueva", l.lexema, l.getfila(), l.getcolumna())
+                        if lexema == "new":
+                            t = Token("new", l.lexema, l.getfila(), l.getcolumna())
                         else:
                             t = Token("Identificador", l.lexema, l.getfila(), l.getcolumna())
                     self.lexemas.append(l)

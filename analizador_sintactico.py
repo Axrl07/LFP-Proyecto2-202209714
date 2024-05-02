@@ -19,8 +19,8 @@ class Parser:
                     if identificador.lexema.isalpha() and identificador.lexema not in self.reservadas:
                         igual = self.listadoTokens.pop(0)
                         if igual.lexema == '=':
-                            nueva = self.listadoTokens.pop(0)
-                            if nueva.lexema == 'nueva':
+                            new = self.listadoTokens.pop(0)
+                            if new.lexema == 'new':
                                 reservada2 = self.listadoTokens.pop(0)
                                 if reservada2.lexema == reservada.lexema:
                                     abre = self.listadoTokens.pop(0)
@@ -29,7 +29,7 @@ class Parser:
                                         if cierra.lexema == ')':
                                             finSentencia = self.listadoTokens.pop(0)
                                             if finSentencia.lexema == ';':
-                                                funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, nueva.lexema, reservada2.lexema, abre.lexema, None, None, None, cierra.lexema, finSentencia.lexema))
+                                                funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, new.lexema, reservada2.lexema, abre.lexema, None, None, None, cierra.lexema, finSentencia.lexema))
                                             else:
                                                 e = Error("Sintactico", ";", finSentencia.lexema, finSentencia.getfila(), finSentencia.getcolumna())
                                                 self.errores.append(e)
@@ -43,7 +43,7 @@ class Parser:
                                     e = Error("Sintactico", reservada.lexema, reservada2.lexema, reservada2.getfila(), reservada2.getcolumna())
                                     self.errores.append(e)
                             else:
-                                e = Error("Sintactico", "nueva", nueva.lexema, nueva.getfila(), nueva.getcolumna())
+                                e = Error("Sintactico", "new", new.lexema, new.getfila(), new.getcolumna())
                                 self.errores.append(e)
                         else:
                             e = Error("Sintactico", "=", igual.lexema, igual.getfila(), igual.getcolumna())
@@ -56,8 +56,8 @@ class Parser:
                     if identificador.lexema.isalpha() and identificador.lexema not in self.reservadas:
                         igual = self.listadoTokens.pop(0)
                         if igual.lexema == '=':
-                            nueva = self.listadoTokens.pop(0)
-                            if nueva.lexema == 'nueva':
+                            new = self.listadoTokens.pop(0)
+                            if new.lexema == 'new':
                                 reservada2 = self.listadoTokens.pop(0)
                                 if reservada2.lexema == reservada.lexema:
                                     abre = self.listadoTokens.pop(0)
@@ -68,7 +68,7 @@ class Parser:
                                             if cierre.lexema == ')':
                                                 finSentencia = self.listadoTokens.pop(0)
                                                 if finSentencia.lexema == ';':
-                                                    funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, nueva.lexema, reservada2.lexema, abre.lexema, nombre.lexema, None, None, cierre.lexema, finSentencia.lexema))
+                                                    funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, new.lexema, reservada2.lexema, abre.lexema, nombre.lexema, None, None, cierre.lexema, finSentencia.lexema))
                                                 else:
                                                     e = Error("Sintactico", ";", finSentencia.lexema, finSentencia.getfila(), finSentencia.getcolumna())
                                                     self.errores.append(e)
@@ -85,7 +85,7 @@ class Parser:
                                     e = Error("Sintactico", reservada.lexema, reservada2.lexema, reservada2.getfila(), reservada2.getcolumna())
                                     self.errores.append(e)
                             else:
-                                e = Error("Sintactico", "nueva", nueva.lexema, nueva.getfila(), nueva.getcolumna())
+                                e = Error("Sintactico", "new", new.lexema, new.getfila(), new.getcolumna())
                                 self.errores.append(e)
                         else:
                             e = Error("Sintactico", "=", igual.lexema, igual.getfila(), igual.getcolumna())
@@ -101,8 +101,8 @@ class Parser:
                     if identificador.lexema.isalpha() and identificador.lexema not in self.reservadas:
                         igual = self.listadoTokens.pop(0)
                         if igual.lexema == '=':
-                            nueva = self.listadoTokens.pop(0)
-                            if nueva.lexema == 'nueva':
+                            new = self.listadoTokens.pop(0)
+                            if new.lexema == 'new':
                                 reservada2 = self.listadoTokens.pop(0)
                                 if reservada2.lexema == reservada.lexema:
                                     abre = self.listadoTokens.pop(0)
@@ -117,7 +117,7 @@ class Parser:
                                                     if cierre.lexema == ')':
                                                         finSentencia = self.listadoTokens.pop(0)
                                                         if finSentencia.lexema == ';':
-                                                            funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, nueva.lexema, reservada2.lexema, abre.lexema, nombre.lexema, separador.lexema, json.lexema, cierre.lexema, finSentencia.lexema))
+                                                            funciones.append(Funcion(reservada.lexema, identificador.lexema, igual.lexema, new.lexema, reservada2.lexema, abre.lexema, nombre.lexema, separador.lexema, json.lexema, cierre.lexema, finSentencia.lexema))
                                                         else:
                                                             e = Error("Sintactico", ";", finSentencia.lexema, finSentencia.getfila(), finSentencia.getcolumna())
                                                             self.errores.append(e)
@@ -140,7 +140,7 @@ class Parser:
                                     e = Error("Sintactico", reservada.lexema, reservada2.lexema, reservada2.getfila(), reservada2.getcolumna())
                                     self.errores.append(e)
                             else:
-                                e = Error("Sintactico", "nueva", nueva.lexema, nueva.getfila(), nueva.getcolumna())
+                                e = Error("Sintactico", "new", new.lexema, new.getfila(), new.getcolumna())
                                 self.errores.append(e)
                         else:
                             e = Error("Sintactico", "=", igual.lexema, igual.getfila(), igual.getcolumna())

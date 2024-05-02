@@ -19,7 +19,7 @@ def nuevo(area):
 
 def abrir(area):
     global ruta
-    nuevaRuta = filedialog.askopenfilename(filetypes=[("Archivos de texto", ".txt"), ("Archivos LFP", ".lfp"), ("Todos los archivos", ".*")])
+    nuevaRuta = filedialog.askopenfilename(filetypes=[("Archivos LFP", ".lfp"), ("Todos los archivos", ".*")])
     contenido = area.get("1.0", "end-1c")
 
     if len(contenido) > 10:
